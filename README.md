@@ -1,17 +1,19 @@
 <p align="center"><br><img src="https://avatars3.githubusercontent.com/u/16580653?v=4" width="128" height="128" /></p>
 
-<h3 align="center">Ionic/Vue SQLite App Starter</h3>
-<p align="center"><strong><code>vue-sqlite-app-starter</code></strong></p>
+<h3 align="center">Ionic/Vue SQLite App Test</h3>
+<p align="center"><strong><code>vue-sqlite-app-test</code></strong></p>
 <p align="center">Ionic/Vue application demonstrating the use of the</p>
 <p align="center"><strong><code>@capacitor-community/sqlite plugin<code></strong></p>
+<p align="center"><strong><code>fix jeep-sqlite issue#1<code></strong></p>
+<br>
 <p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3 </strong></p><br>
 <br>
 <p align="center">
   <img src="https://img.shields.io/maintenance/yes/2021?style=flat-square" />
-  <a href="https://github.com/jepiqueau/vue-sqlite-app-starter"><img src="https://img.shields.io/github/license/jepiqueau/vue-sqlite-app-starter?style=flat-square" /></a>
-  <a href="https://github.com/jepiqueau/vue-sqlite-app-starter"><img src="https://img.shields.io/github/package-json/v/jepiqueau/vue-sqlite-app-starter/main?style=flat-square" /></a>
+  <a href="https://github.com/jepiqueau/vue-sqlite-app-test"><img src="https://img.shields.io/github/license/jepiqueau/vue-sqlite-app-test?style=flat-square" /></a>
+  <a href="https://github.com/jepiqueau/vue-sqlite-app-test"><img src="https://img.shields.io/github/package-json/v/jepiqueau/vue-sqlite-app-test/main?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-2-orange?style=flat-square" /></a>
+<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-1-orange?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </p>
 
@@ -23,17 +25,14 @@
 | Quéau Jean Pierre | [jepiqueau](https://github.com/jepiqueau) |        |
 
 
-## 🚧 To be Updated 🚧
-
-The components `EncryptionTest.vue` and `UpgradeVersionTest.vue`have still to be created
 
 ## Installation 
 
 To start clone the project
 
 ```bash
-git clone https://github.com/jepiqueau/vue-sqlite-app-starter.git
-cd ./vue-sqlite-app-starter
+git clone https://github.com/jepiqueau/vue-sqlite-app-test.git
+cd ./vue-sqlite-app-test
 git remote remove origin
 npm install
 ```
@@ -81,9 +80,6 @@ npx cap open android
 npx cap open @capacitor-community/electron
 ```
 
-## Accessing the tests 🚧
-
-Go to the Tab2 of the application
 
 
 ## Contributors ✨
@@ -96,7 +92,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/jepiqueau"><img src="https://avatars3.githubusercontent.com/u/16580653?v=4" width="100px;" alt=""/><br /><sub><b>Jean Pierre Quéau</b></sub></a><br /><a href="https://github.com/jepiqueau/vue-sqlite-app-starter/commits?author=jepiqueau" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/codeluggage"><img src="https://avatars.githubusercontent.com/u/1154150?v=4" width="100px;" alt=""/><br /><sub><b>Matias Forbord</b></sub></a><br /><a href="https://github.com/jepiqueau/vue-sqlite-app-starter/commits?author=jepiqueau" title="Code">💻</a></td>
     
   </tr>
 </table>
