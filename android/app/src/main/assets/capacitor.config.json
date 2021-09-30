@@ -1,6 +1,6 @@
 {
 	"appId": "com.jeep.app.vue.hook.sqlite",
-	"appName": "vue-sqlite-app-starter",
+	"appName": "vue-sqlite-app-test",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "dist",
