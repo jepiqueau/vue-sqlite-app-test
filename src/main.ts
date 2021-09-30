@@ -25,28 +25,60 @@ import './theme/variables.css';
 
 /* SQLite imports */
 import { defineCustomElements as jeepSqlite, applyPolyfills } from "jeep-sqlite/loader";
-import { useState } from '@/composables/state';
+import { useSQLite, SQLiteDBConnection} from 'vue-sqlite-hook/dist';
+import { Capacitor } from '@capacitor/core';
+import { createTablesNoEncryption, dropTablesTablesNoEncryption} from '@/utils/utils-db-no-encryption'; 
 
 applyPolyfills().then(() => {
     jeepSqlite(window);
 });
+window.addEventListener('DOMContentLoaded', async () => {
+  const platform = Capacitor.getPlatform();
 
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
+  const app = createApp(App)
+    .use(IonicVue)
+    .use(router);
 
-/* SQLite Global Variables*/
-const [jsonListeners, setJsonListeners] = useState(false);
-const [isModal, setIsModal] = useState(false);
-const [message, setMessage] = useState("");
-app.config.globalProperties.$isModalOpen = {isModal: isModal, setIsModal: setIsModal};
-app.config.globalProperties.$isJsonListeners = {jsonListeners: jsonListeners, setJsonListeners: setJsonListeners};
-app.config.globalProperties.$messageContent = {message: message, setMessage: setMessage};
+  if(platform === "web") {
+		const jeepSqlite = document.createElement('jeep-sqlite');
+		document.body.appendChild(jeepSqlite);
+    await customElements.whenDefined('jeep-sqlite');
+  }
+  app.config.globalProperties.$sqlite = useSQLite();
+  const sqlite = app.config.globalProperties.$sqlite;
+  try {
+    if(platform === "web") {
+      await sqlite.initWebStore();
+    }
+    await sqlite.checkConnectionsConsistency({
+      dbNames: [], // i.e. "i expect no connections to be open"
+    })
+    const db: SQLiteDBConnection = await sqlite.createConnection("test_vue");
+    console.log("> createConnection " +
+                                " 'test_vue' successful\n");
+    app.config.globalProperties.$db = db;
 
-//  Existing Connections Store
-const [existConn, setExistConn] = useState(false);
-app.config.globalProperties.$existingConn = {existConn: existConn, setExistConn: setExistConn};
-    
-router.isReady().then(() => {
-  app.mount('#app');
+    // open NoEncryption database
+    await db.open();
+    // Drop tables if exists
+    let res = await db.execute(dropTablesTablesNoEncryption);
+    if(res.changes && res.changes.changes !== 0 &&
+              res.changes.changes !== 1){
+      console.log(`Execute dropTablesTablesNoEncryption changes < 0`);
+      return;
+    } 
+    // Create tables
+    res = await db.execute(createTablesNoEncryption);
+    console.log(`Create Table ${JSON.stringify(res)}`);
+
+    if(platform === "web") {
+      await sqlite.saveToStore("test_vue");
+    }
+
+  } catch (err) {
+    console.log(`App Error: ${err}`);
+  }
+  router.isReady().then(() => {
+    app.mount('#app');
+  });
 });

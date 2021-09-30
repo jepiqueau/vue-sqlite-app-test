@@ -1,7 +1,7 @@
 {
-  "name": "vue-sqlite-app-starter",
-  "version": "3.2.3-1",
-  "description": "Ionic/Vue SQLite Application Starter",
+  "name": "vue-sqlite-app-test",
+  "version": "1.0.0",
+  "description": "Ionic/Vue SQLite Application Test jeep-sqlite",
   "author": "Jean Pierre Quéau",
   "license": "MIT",
   "homepage": "./",
