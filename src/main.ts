@@ -28,6 +28,7 @@ import { defineCustomElements as jeepSqlite, applyPolyfills } from "jeep-sqlite/
 import { useSQLite, SQLiteDBConnection} from 'vue-sqlite-hook/dist';
 import { Capacitor } from '@capacitor/core';
 import { createTablesNoEncryption, dropTablesTablesNoEncryption} from '@/utils/utils-db-no-encryption'; 
+import { schemaToImport179 } from '@/utils/utils-db-importFromJson';
 
 applyPolyfills().then(() => {
     jeepSqlite(window);
@@ -74,7 +75,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     if(platform === "web") {
       await sqlite.saveToStore("test_vue");
     }
+    // test issue#179
+    const result = await sqlite.isJsonValid(JSON.stringify(schemaToImport179));
+    if(!result.result) {
+      console.log(`isJsonValid: "schemaToImport179" is not valid`);
+      return;
+    }
+    console.log(`isJsonValid: "schemaToImport179" is valid`);
 
+    // full import
+    res = await sqlite.importFromJson(JSON.stringify(schemaToImport179));    
+    if(res.changes && res.changes.changes === -1 ) {
+      console.log("ImportFromJson 'full' failed");
+      return;
+    }
   } catch (err) {
     console.log(`App Error: ${err}`);
   }
