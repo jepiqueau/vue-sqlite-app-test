@@ -39,22 +39,28 @@ window.addEventListener('DOMContentLoaded', async () => {
   const app = createApp(App)
     .use(IonicVue)
     .use(router);
-
-  if(platform === "web") {
-		const jeepSqlite = document.createElement('jeep-sqlite');
-		document.body.appendChild(jeepSqlite);
-    await customElements.whenDefined('jeep-sqlite');
-  }
+  
+  // Initialize the sqlite hook
   app.config.globalProperties.$sqlite = useSQLite();
   const sqlite = app.config.globalProperties.$sqlite;
-  try {
+  
+  try {  
     if(platform === "web") {
+      const jeepSqlite = document.createElement('jeep-sqlite');
+      document.body.appendChild(jeepSqlite);
+      await customElements.whenDefined('jeep-sqlite');
       await sqlite.initWebStore();
     }
-    await sqlite.checkConnectionsConsistency({
-      dbNames: [], // i.e. "i expect no connections to be open"
-    })
-    const db: SQLiteDBConnection = await sqlite.createConnection("test_vue");
+
+    const ret = await sqlite.checkConnectionsConsistency();
+    const isConn = (await sqlite.isConnection("test_vue")).result;
+    let db: SQLiteDBConnection
+    if (ret.result && isConn) {
+      db = await sqlite.retrieveConnection("test_vue");
+  
+    } else {
+      db = await sqlite.createConnection("test_vue");
+    }
     console.log("> createConnection " +
                                 " 'test_vue' successful\n");
     app.config.globalProperties.$db = db;

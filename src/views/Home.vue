@@ -12,10 +12,18 @@
           <ion-title size="large">Blank</ion-title>
         </ion-toolbar>
       </ion-header>
-    
       <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <div id="text-app">
+          <strong>Ready to create an app?</strong>
+          <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        </div>
+        <div id="users">
+          <ul id="user-with-index">
+            <li v-for="(user, index) in users" :key="user.id">
+              {{ index }} - {{ user.name }}
+            </li>
+          </ul>
+        </div>
       </div>
     </ion-content>
   </ion-page>
@@ -23,7 +31,7 @@
 
 <script lang="ts">
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { defineComponent, onMounted, getCurrentInstance } from 'vue';
+import { defineComponent, onMounted, getCurrentInstance, ref } from 'vue';
 import { importTwoUsers } from '@/utils/utils-db-no-encryption'; 
 import { SQLiteDBConnection} from 'vue-sqlite-hook/dist';
 
@@ -34,10 +42,13 @@ export default defineComponent({
     IonHeader,
     IonPage,
     IonTitle,
-        IonToolbar
+    IonToolbar
   },
   setup() {
     console.log('in Home setup');
+    const initUser: any[] = [];
+    const users = ref(initUser);
+
     const app = getCurrentInstance()
     const db: SQLiteDBConnection = app?.appContext.config.globalProperties.$db;
     let errMess = "";
@@ -81,18 +92,19 @@ export default defineComponent({
         if(!retSetUsers) {
             console.log(`setUsers failed: ${errMess}`);
         } else {
-            const users: any[] = await getUsers();
-            if(users.length === 2) { 
-                for( const user of users) {
+            const userList = await getUsers();
+            if(userList.length === 2) { 
+                for( const user of userList) {
                     console.log(`name : ${user.name}`)
                 }
                 console.log("setUsers was successful");
+                users.value = userList
             } else {
                 console.log("setUsers failed");
             }
         }
     });
-    return { errMess };
+    return { errMess, users };
   }
 
 });
@@ -100,19 +112,26 @@ export default defineComponent({
 
 <style scoped>
 #container {
-  text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
 }
-#container strong {
+#text-app {
+  text-align: center;
+  
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 10%;
+  bottom: 30%;
+}
+#text-app strong {
   font-size: 20px;
   line-height: 26px;
 }
-#container p {
+#text-app p {
   font-size: 16px;
   line-height: 22px;
   
@@ -121,7 +140,12 @@ export default defineComponent({
   margin: 0;
 }
 
-#container a {
+#text-app a {
   text-decoration: none;
+}
+#users {
+  position: relative;
+  left: 5%;
+  top: 10%;
 }
 </style>
